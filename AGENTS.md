@@ -49,6 +49,7 @@ No speculative abstractions, one-implementation interfaces, generic managers, du
 - No new runtime layer parallel to the AMR Reasoning Route.
 - No profile change without the AMR verification/adaptation contract.
 - No Jev-selected side effect can bypass existing authorization.
+- Missing TypeSafe credentials are a host setup condition: surface `SETUP_REQUIRED` to the harness/UI; never ask a model to solicit, echo, persist, or place a raw API key in conversation context.
 - Ambiguous semantic routing escalates; it must not silently widen search.
 - Every non-trivial behavior leaves one runnable check behind.
 

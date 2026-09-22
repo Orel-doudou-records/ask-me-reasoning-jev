@@ -203,7 +203,8 @@ The AMR router applies the base shape plus the existing high-assurance semantics
 ## Failure behavior
 
 - Missing or malformed TypeSafe answer -> no route mutation; escalate/fallback.
-- Missing API credential -> no guessed semantic classification.
+- Missing API credential -> the TypeSafe adapter returns `SETUP_REQUIRED / missing_typesafe_credential`; the provider-agnostic reducer is not called and no network request is made.
+- Credential setup belongs to the host/harness/UI. Model-facing agents must not solicit or carry the raw secret in conversation context.
 - Ambiguous material signal -> `ESCALATE`.
 - TypeSafe service failure -> no partial route mutation.
 - Unsupported/unknown returned field -> reject the response.
