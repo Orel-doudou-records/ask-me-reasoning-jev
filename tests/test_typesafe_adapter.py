@@ -84,7 +84,7 @@ class TypeSafeAdapterTests(unittest.TestCase):
     def test_missing_key_stops_before_network(self):
         called = False
 
-        def opener(_request, _timeout):
+        def opener(_request, timeout):
             nonlocal called
             called = True
             raise AssertionError("network must not be called")
@@ -95,21 +95,21 @@ class TypeSafeAdapterTests(unittest.TestCase):
         self.assertFalse(called)
 
     def test_provider_failure_returns_no_route(self):
-        def opener(_request, _timeout):
+        def opener(_request, timeout):
             raise URLError("unavailable")
 
         with self.assertRaises(RuntimeError):
             typesafe_adapter.route_orient(self.state, "secret", opener=opener)
 
     def test_non_success_status_returns_no_route(self):
-        def opener(_request, _timeout):
+        def opener(_request, timeout):
             return FakeResponse({"error": "busy"}, status=503)
 
         with self.assertRaises(RuntimeError):
             typesafe_adapter.route_orient(self.state, "secret", opener=opener)
 
     def test_malformed_response_is_rejected_by_existing_contract(self):
-        def opener(_request, _timeout):
+        def opener(_request, timeout):
             return FakeResponse({"answers": {}})
 
         with self.assertRaises(ValueError):
