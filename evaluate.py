@@ -82,6 +82,8 @@ def evaluate_live(cases, api_key, model="jev-latest"):
     details = []
     signal_total = 0
     signal_correct = 0
+    ambiguity_target_total = 0
+    ambiguity_target_correct = 0
     route_correct = 0
     escalation_expected = 0
     escalation_correct = 0
@@ -105,8 +107,12 @@ def evaluate_live(cases, api_key, model="jev-latest"):
             expected = case["expected_signals"][name]
             actual = classify_probability(result["signal_probabilities"][name])
             correct = actual == expected
-            signal_total += 1
-            signal_correct += int(correct)
+            if expected == "ambiguous":
+                ambiguity_target_total += 1
+                ambiguity_target_correct += int(correct)
+            else:
+                signal_total += 1
+                signal_correct += int(correct)
             signal_results[name] = {
                 "expected": expected,
                 "actual": actual,
@@ -143,6 +149,11 @@ def evaluate_live(cases, api_key, model="jev-latest"):
         "signal_total": signal_total,
         "signal_correct": signal_correct,
         "signal_accuracy": signal_correct / signal_total if signal_total else 0.0,
+        "ambiguity_target_total": ambiguity_target_total,
+        "ambiguity_target_correct": ambiguity_target_correct,
+        "ambiguity_target_accuracy": (
+            ambiguity_target_correct / ambiguity_target_total if ambiguity_target_total else 0.0
+        ),
         "route_correct": route_correct,
         "route_accuracy": route_correct / completed if completed else 0.0,
         "escalation_expected": escalation_expected,
