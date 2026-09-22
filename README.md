@@ -21,4 +21,10 @@ This repository is intentionally incremental. The first validated slice uses Jev
 - Jev Ultrafast reference architecture: https://github.com/browser-use/jev-ultrafast
 - Ponytail: https://github.com/DietrichGebert/ponytail
 
+## Minimal TypeSafe boundary
+
+`typesafe_adapter.route_orient(state, api_key)` sends the existing ORIENT contract to TypeSafe System One and immediately passes the returned Noul answers to the provider-agnostic AMR reducer.
+
+The adapter does not read environment variables, persist credentials, retry side effects, or own routing policy. The caller owns credential sourcing and fallback behavior.
+
 See `AGENTS.md` before making changes.
