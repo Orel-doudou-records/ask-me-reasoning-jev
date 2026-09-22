@@ -1,4 +1,3 @@
-import io
 import json
 import unittest
 from urllib.error import URLError
