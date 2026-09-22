@@ -1,7 +1,9 @@
 # Spec 0001 — Jev-assisted ORIENT routing
 
-Status: **Ready for ticketing**  
+Status: **Implemented — live Jev evaluation pending**  
 Parent: #1
+
+Implementation code, offline evaluation, and the manual live-evaluation workflow are merged. Current progress and the stop/go gate remain tracked in #1; the first live Jev report is still pending.
 
 ## Problem
 
@@ -33,17 +35,15 @@ The reducer may consume Jev results. Jev may not directly mutate a Reasoning Rou
 
 ## Existing AMR concepts reused
 
-v0 reuses the current AMR concepts rather than introducing equivalents:
+v0 reuses the current AMR contracts rather than introducing equivalents. Because no canonical AMR repository is currently accessible, this repository carries a narrow read-only dependency snapshot; see [upstream AMR provenance](../upstream-amr.md).
 
-- `Reasoning Route`
-- `selection-policy.md`
-- `model-capability-policy.md`
-- `state-machine.md`
-- `frame_delta`
-- `verification_verdict`
-- `adaptation_proposal`
+- [Reasoning Route schema](../upstream/amr/reasoning-route-schema.md)
+- [selection policy](../upstream/amr/selection-policy.md)
+- [model capability policy](../upstream/amr/model-capability-policy.md)
+- [cognitive state machine](../upstream/amr/state-machine.md)
+- [`frame_delta`, `verification_verdict`, and `adaptation_proposal` module contracts](../upstream/amr/modules.md)
 
-No new persistent `TaskSnapshot`, `Affordance`, `DecisionPacket`, `BoundedDecision`, or `ObservationReceipt` type is introduced.
+These vendored files are integration dependencies, not editable AMR-Jev policy. No new persistent `TaskSnapshot`, `Affordance`, `DecisionPacket`, `BoundedDecision`, or `ObservationReceipt` type is introduced.
 
 ## Input seam
 
@@ -240,7 +240,7 @@ The first implementation brick is complete only when runnable checks prove:
 8. malformed Jev output cannot mutate a route;
 9. no network call is required for unit tests.
 
-A later live smoke test may call TypeSafe, but CI must remain deterministic and offline.
+Normal CI remains deterministic and offline. Live Jev evaluation is run explicitly through the manual [`live Jev evaluation`](../../.github/workflows/live-eval.yml) GitHub Actions workflow, which reads the repository secret `TYPESAFE_API_KEY` and uploads `live-evaluation.json` as an artifact.
 
 ## Dependency order
 
@@ -256,7 +256,7 @@ labeled routing evaluation
 decision: stop at v0 OR justify a v1
 ```
 
-No v1 dynamic routing ticket may start before the labeled evaluation.
+No v1 dynamic routing ticket may start before the first live labeled evaluation is reviewed in #5.
 
 ## Ask Matt review
 
