@@ -145,7 +145,7 @@ Initial prototype bands are deliberately conservative and must be evaluated on l
 - `p <= 0.30`: false
 - otherwise: ambiguous
 
-If an ambiguous judgment could change the selected preset, topology, grounding requirement, or assurance level, v0 returns `ESCALATE` instead of guessing.
+Materiality is determined in code, not by another model judgment: for each ambiguous signal, reduce once with that signal forced to `false` and once with it forced to `true`. If the two reductions change the base preset, topology, grounding requirement, or assurance level, v0 returns `ESCALATE`. Otherwise the ambiguity is irrelevant to the route and can be ignored.
 
 The thresholds are implementation constants for the prototype, not user configuration and not universal TypeSafe recommendations.
 
@@ -187,6 +187,7 @@ The v0 reducer returns an ephemeral orientation result:
 
 ```yaml
 status: ROUTED|ESCALATE
+base_preset: direct|grounded|analytic|exploratory|causal|agentic
 preset: direct|grounded|analytic|exploratory|causal|agentic|high-assurance
 topology: linear|chain|tree|graph
 external_evidence_needed: true|false
@@ -195,9 +196,9 @@ signal_probabilities:
 ambiguous_signals: [<signal>]
 ```
 
-This is an adapter result, not a replacement for the Reasoning Route schema.
+This is an adapter result, not a replacement for the Reasoning Route schema. `base_preset` preserves the minimal route shape when `preset` becomes `high-assurance`; it is not persisted as a new Reasoning Route field.
 
-The AMR router applies it to the existing profile representation.
+The AMR router applies the base shape plus the existing high-assurance semantics to the existing profile representation.
 
 ## Failure behavior
 
@@ -234,9 +235,10 @@ The first implementation brick is complete only when runnable checks prove:
 3. the reducer follows the deterministic priority above;
 4. external evidence remains active when another preset wins;
 5. graph/tree/chain/linear topology follows the stated rules;
-6. a material ambiguous signal returns `ESCALATE`;
-7. malformed Jev output cannot mutate a route;
-8. no network call is required for unit tests.
+6. a material ambiguous signal is detected by counterfactual reduction and returns `ESCALATE`;
+7. high-assurance routing preserves the minimal `base_preset`;
+8. malformed Jev output cannot mutate a route;
+9. no network call is required for unit tests.
 
 A later live smoke test may call TypeSafe, but CI must remain deterministic and offline.
 
