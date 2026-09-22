@@ -25,4 +25,22 @@ The dependency graph and current implementation status are tracked in [AMR-JEV-0
 
 The adapter does not read environment variables, persist credentials, retry side effects, or own routing policy. The caller owns credential sourcing and fallback behavior.
 
+## Evaluation
+
+The labeled corpus is `evaluation/cases.json`. It is intentionally readable and covers every v0 base preset, every topology, mixed signals, high-assurance wrapping, adversarial state, and ambiguity behavior.
+
+Offline corpus/reducer check:
+
+```bash
+python evaluate.py
+```
+
+Live Jev evaluation:
+
+```bash
+TYPESAFE_API_KEY=... python evaluate.py --live
+```
+
+The live report keeps boolean signal accuracy, ambiguity-target behavior, route accuracy, escalation behavior, and provider errors separate. Do not tune the frozen v0 thresholds on this corpus and then present the same corpus as an independent final evaluation.
+
 See `AGENTS.md` before making changes.
