@@ -19,7 +19,12 @@ def route_orient(
 ):
     """Send one ORIENT request and reduce the validated Noul answers through AMR policy."""
     if not isinstance(api_key, str) or not api_key.strip():
-        raise ValueError("A TypeSafe API key is required")
+        return {
+            "status": "SETUP_REQUIRED",
+            "reason": "missing_typesafe_credential",
+            "provider": "typesafe",
+            "required_setting": "TYPESAFE_API_KEY",
+        }
 
     request = Request(
         endpoint,
