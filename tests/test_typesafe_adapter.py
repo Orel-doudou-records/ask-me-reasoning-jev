@@ -88,9 +88,17 @@ class TypeSafeAdapterTests(unittest.TestCase):
             called = True
             raise AssertionError("network must not be called")
 
-        with self.assertRaises(ValueError):
-            typesafe_adapter.route_orient(self.state, "", opener=opener)
+        result = typesafe_adapter.route_orient(self.state, "", opener=opener)
 
+        self.assertEqual(
+            result,
+            {
+                "status": "SETUP_REQUIRED",
+                "reason": "missing_typesafe_credential",
+                "provider": "typesafe",
+                "required_setting": "TYPESAFE_API_KEY",
+            },
+        )
         self.assertFalse(called)
 
     def test_provider_failure_returns_no_route(self):
