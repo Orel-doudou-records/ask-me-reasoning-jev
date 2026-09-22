@@ -14,6 +14,7 @@ The dependency graph and current implementation status are tracked in [AMR-JEV-0
 
 ## Upstream references
 
+- AMR contract snapshot and provenance: `docs/upstream-amr.md`
 - TypeSafe skill: https://github.com/typesafe-ai/skills/blob/main/skills/typesafe-ai/SKILL.md
 - Jev engineering skill: https://github.com/dbreunig/building-with-jev-skill
 - Jev Ultrafast reference architecture: https://github.com/browser-use/jev-ultrafast
@@ -35,7 +36,15 @@ Offline corpus/reducer check:
 python evaluate.py
 ```
 
-Live Jev evaluation:
+Recommended reproducible live path:
+
+1. In GitHub, add the repository Actions secret `TYPESAFE_API_KEY`.
+2. Open **Actions → live Jev evaluation → Run workflow**.
+3. When the run completes, download the `live-evaluation` artifact and review `live-evaluation.json`.
+
+The workflow source is `.github/workflows/live-eval.yml`. It does not persist the API key in the repository, request state, or report.
+
+Local alternative:
 
 ```bash
 TYPESAFE_API_KEY=... python evaluate.py --live
