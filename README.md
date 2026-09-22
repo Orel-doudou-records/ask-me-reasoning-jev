@@ -26,6 +26,19 @@ The dependency graph and current implementation status are tracked in [AMR-JEV-0
 
 The adapter does not read environment variables, persist credentials, retry side effects, or own routing policy. The caller owns credential sourcing and fallback behavior.
 
+If no TypeSafe credential is available, the adapter returns:
+
+```json
+{
+  "status": "SETUP_REQUIRED",
+  "reason": "missing_typesafe_credential",
+  "provider": "typesafe",
+  "required_setting": "TYPESAFE_API_KEY"
+}
+```
+
+The host or UI should turn this state into a configuration action. A model-facing agent must **not** ask the user to paste the raw API key into conversation or model context.
+
 ## Evaluation
 
 The labeled corpus is `evaluation/cases.json`. It is intentionally readable and covers every v0 base preset, every topology, mixed signals, high-assurance wrapping, adversarial state, and ambiguity behavior.
