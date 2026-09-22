@@ -1,7 +1,6 @@
 """Thin HTTP boundary between AMR-Jev ORIENT and TypeSafe System One."""
 
 import json
-from urllib.error import URLError
 from urllib.request import Request, urlopen
 
 from amr_jev import build_orient_request, reduce_orient_answers
@@ -36,7 +35,7 @@ def route_orient(
         with opener(request, timeout=timeout) as response:
             status = getattr(response, "status", 200)
             raw = response.read()
-    except (URLError, TimeoutError, OSError) as exc:
+    except OSError as exc:
         raise RuntimeError("TypeSafe request failed; no route was produced") from exc
 
     if not 200 <= status < 300:
