@@ -1,6 +1,6 @@
 # Ask Me Reasoning Jev
 
-A minimal Jev-assisted routing layer for [Ask Me Reasoning](https://github.com/Orel-doudou-records/ask-me-reasoning-jev), optimized for compact models.
+A minimal Jev-assisted routing layer for Ask Me Reasoning (AMR), optimized for compact models.
 
 ## Design rule
 
