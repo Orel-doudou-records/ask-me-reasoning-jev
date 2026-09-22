@@ -1,0 +1,25 @@
+name: live Jev evaluation
+
+on:
+  workflow_dispatch:
+
+jobs:
+  evaluate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Require TypeSafe credential
+        env:
+          TYPESAFE_API_KEY: ${{ secrets.TYPESAFE_API_KEY }}
+        run: test -n "$TYPESAFE_API_KEY"
+      - name: Run live evaluation
+        env:
+          TYPESAFE_API_KEY: ${{ secrets.TYPESAFE_API_KEY }}
+        run: python evaluate.py --live | tee live-evaluation.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: live-evaluation
+          path: live-evaluation.json
