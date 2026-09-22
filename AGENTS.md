@@ -31,7 +31,7 @@ Before adding code, stop at the first rung that holds:
 
 1. Do we need it?
 2. Does AMR already have the concept?
-3. Does Python/TypeScript stdlib already cover it?
+3. Does the implementation language's standard library already cover it?
 4. Does the platform or TypeSafe API already cover it?
 5. Does an installed dependency cover it?
 6. Can the same behavior be expressed with less code?
