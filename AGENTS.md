@@ -7,6 +7,7 @@ This repository adds the smallest useful Jev integration to Ask Me Reasoning (AM
 ## Authority
 
 - AMR owns routing policy, state-machine semantics, budgets, verification, acceptance, and side-effect authority.
+- Before changing routing semantics, read `docs/upstream-amr.md` and the referenced vendored AMR contracts.
 - Jev supplies bounded semantic judgments only.
 - Deterministic facts, permissions, calculations, schemas, tests, and runtime observations stay in code.
 - Generative models execute bounded work; they do not silently rewrite the route.
@@ -42,6 +43,7 @@ No speculative abstractions, one-implementation interfaces, generic managers, du
 ## Repository constraints
 
 - Documentation and contracts are written in English.
+- Files under `docs/upstream/amr/` are read-only dependency snapshots; refresh them only through the protocol in `docs/upstream-amr.md`.
 - Prefer small pure functions and closed typed choices.
 - One brick per PR.
 - No new runtime layer parallel to the AMR Reasoning Route.
