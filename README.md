@@ -8,11 +8,9 @@ A minimal Jev-assisted routing layer for Ask Me Reasoning (AMR), optimized for c
 
 This repository is intentionally incremental. The first validated slice uses Jev only at `ORIENT`; dynamic next-state routing is deferred until evaluation proves it is needed.
 
-## Current brick
+## Project status
 
-- Parent: [AMR-JEV-001](https://github.com/Orel-doudou-records/ask-me-reasoning-jev/issues/1)
-- Spec: `docs/specs/0001-jev-orient-routing.md`
-- Status: spec ready for ticketing
+The dependency graph and current implementation status are tracked in [AMR-JEV-001](https://github.com/Orel-doudou-records/ask-me-reasoning-jev/issues/1). The canonical v0 contract is `docs/specs/0001-jev-orient-routing.md`.
 
 ## Upstream references
 
