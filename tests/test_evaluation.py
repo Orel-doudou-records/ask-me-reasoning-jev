@@ -1,8 +1,10 @@
 import json
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 import evaluate
+from amr_jev import reduce_orient_answers
 
 
 CASES = Path("evaluation/cases.json")
@@ -40,6 +42,33 @@ class EvaluationTests(unittest.TestCase):
                     set(case["expected_signals"].values())
                     <= {"true", "false", "ambiguous"}
                 )
+
+    def test_live_report_separates_boolean_signals_ambiguity_routes_and_escalation(self):
+        cases = evaluate.load_cases(CASES)
+        direct = next(case for case in cases if case["id"] == "direct_rewrite")
+        ambiguous = next(case for case in cases if case["id"] == "ambiguous_material_action")
+
+        direct_answers = {name: {"noul": 0.0} for name in evaluate.SIGNALS}
+        ambiguous_answers = {name: {"noul": 0.0} for name in evaluate.SIGNALS}
+        ambiguous_answers["material_action_needed"] = {"noul": 0.5}
+
+        with patch(
+            "evaluate.route_orient",
+            side_effect=[
+                reduce_orient_answers(direct_answers),
+                reduce_orient_answers(ambiguous_answers),
+            ],
+        ):
+            report = evaluate.evaluate_live([direct, ambiguous], "fake-key")
+
+        self.assertEqual(report["completed_cases"], 2)
+        self.assertEqual(report["signal_total"], 13)
+        self.assertEqual(report["signal_correct"], 13)
+        self.assertEqual(report["ambiguity_target_total"], 1)
+        self.assertEqual(report["ambiguity_target_correct"], 1)
+        self.assertEqual(report["route_correct"], 2)
+        self.assertEqual(report["escalation_expected"], 1)
+        self.assertEqual(report["escalation_correct"], 1)
 
 
 if __name__ == "__main__":
